@@ -5,6 +5,7 @@ FROM ubuntu:14.10
 MAINTAINER Brandon Holt <holt.bg@gmail.com>
 
 RUN apt-get update && apt-get install -y \
+  pkg-config \
   build-essential \
   libboost1.55-all-dev \
   wget \
@@ -21,8 +22,9 @@ ADD . /setup
 RUN cat /setup/profile.bash >> /root/.bashrc
 
 ENV LD_LIBRARY_PATH  $LD_LIBRARY_PATH:/usr/local/lib
-ENV CC               /usr/bin/gcc
-ENV CXX              /usr/bin/g++
+ENV CC               gcc
+ENV CXX              g++
+ENV LD               g++
 
 ENTRYPOINT ["/bin/bash"]
 CMD ["--login"]
