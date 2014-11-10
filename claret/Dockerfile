@@ -8,7 +8,8 @@ RUN apt-get install -y \
   libevent-dev \
   libprotobuf-dev \
   protobuf-compiler \
-  libssl-dev
+  libssl-dev \
+  tcl
 
 ENTRYPOINT ["/bin/bash"]
 CMD ["--login"]
