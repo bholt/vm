@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN mkdir /setup
 ADD . /setup
-RUN cat /setup/profile.bash >> /etc/profile
+RUN cat /setup/profile.bash >> /root/.bashrc
 
 ENV LD_LIBRARY_PATH  $LD_LIBRARY_PATH:/usr/local/lib
 ENV CC               /usr/bin/gcc
