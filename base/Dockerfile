@@ -15,7 +15,8 @@ RUN apt-get update && apt-get install -y \
   git \
   bash-completion \
   man \
-  openssl
+  openssl \
+  vim
 
 RUN mkdir /setup
 ADD . /setup
