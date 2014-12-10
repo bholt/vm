@@ -1,0 +1,14 @@
+#!/bin/bash
+DIR="${BASH_SOURCE%/*}"
+cd $DIR
+if [ ! -d tapir ]; then
+  echo "# cloning tapir code"
+  git clone tricycle:/projects/sys/syslab/cse552project_kvstore tapir
+  cd tapir && git checkout claret/simple && cd ..
+else
+  echo "# pulling the latest tapir code"
+  cd tapir && git pull && cd ..
+fi
+
+echo "# building docker image"
+docker build --rm=true -t bholt/claret-bin .
