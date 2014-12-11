@@ -1,0 +1,46 @@
+#!/bin/bash
+# Usage:
+#   claret-bin/run [nshard=4 ...]
+# 
+# (parse command-line as just a bunch of eval statements)
+for arg in $@; do eval $arg; done
+
+config=${config:-config}   # name of config volume
+nshards=${nshards:-1}      # number of shards
+mode=${mode:-ds-l}         # txn mode (ds-l|ds-s)
+n=${n:-1}                  # number of failures to tolerate
+
+let nreplicas=2*$n+1       # number of replicas needed
+
+echo "# Cleaning up previous containers"
+docker ps | grep tapir | awk '{print $1}' | xargs docker stop
+docker ps -a | grep tapir | awk '{print $1}' | xargs docker rm
+
+echo "# Launching Tapir"
+echo "nshards:   $nshards"
+echo "nreplicas: $nreplicas"
+
+for ((r=0; r<$nreplicas; r++)); do
+  name="tapirTime${r}"
+  echo "## $name"
+  
+  # launch dsstore server container
+  docker run -d -P --name $name --volumes-from $config bholt/claret-bin -c "/tapir/src/timeserver/timeserver -c /config/shard.tss.config -i $r"
+done
+
+# Launch dsstore servers (nshards x nreplicas)
+for ((s=0; s<$nshards; s++)); do
+  echo "# Shard $s"
+  for ((r=0; r<$nreplicas; r++)); do
+    name="tapirShard${s}r${r}"
+    echo "## $name"
+    
+    # launch dsstore server container
+    docker run -d -P --name $name --volumes-from $config bholt/claret-bin -c "/tapir/src/dsstore/server -m $mode -c /config/shard$s.config -i $r"
+  done
+done
+
+# Launch client(s)
+name="tapirDSBench"
+docker run -d -P --name $name --volumes-from $config bholt/claret-bin -c "/tapir/src/bench/dsbench -m $mode -c /config/shard -i $r"
+
