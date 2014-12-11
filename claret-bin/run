@@ -5,7 +5,7 @@
 # (parse command-line as just a bunch of eval statements)
 for arg in $@; do eval $arg; done
 
-config=${config:-config}   # name of config volume
+vconfig=${vconfig:-config} # name of config volume
 nshards=${nshards:-1}      # number of shards
 mode=${mode:-ds-l}         # txn mode (ds-l|ds-s)
 n=${n:-1}                  # number of failures to tolerate
@@ -19,13 +19,26 @@ docker ps -a | grep tapir | awk '{print $1}' | xargs docker rm
 echo "# Launching Tapir"
 echo "nshards:   $nshards"
 echo "nreplicas: $nreplicas"
+echo "config:    $vconfig"
 
+function cat_config {
+  docker run --rm --volumes-from $vconfig busybox /bin/sh -c "cat /config/$1.config"
+}
+
+function config_port {
+  local config=$1
+  let line=$2+2
+  cat_config $config | sed -n ${line}p | awk -F'[ :]' '{print $3}'
+}
+
+echo "# TimeServers"
 for ((r=0; r<$nreplicas; r++)); do
   name="tapirTime${r}"
-  echo "## $name"
+  port=$(config_port shard.tss $r)
+  echo "## $name : $port"
   
   # launch dsstore server container
-  docker run -d -P --name $name --volumes-from $config bholt/claret-bin -c "/tapir/src/timeserver/timeserver -c /config/shard.tss.config -i $r"
+  docker run -d -p $port:$port --name $name --volumes-from $vconfig bholt/claret-bin -c "/tapir/src/timeserver/timeserver -c /config/shard.tss.config -i $r"
 done
 
 # Launch dsstore servers (nshards x nreplicas)
@@ -33,14 +46,16 @@ for ((s=0; s<$nshards; s++)); do
   echo "# Shard $s"
   for ((r=0; r<$nreplicas; r++)); do
     name="tapirShard${s}r${r}"
-    echo "## $name"
+    port=$(config_port shard$s $r)
+    echo "## $name : $port"
     
     # launch dsstore server container
-    docker run -d -P --name $name --volumes-from $config bholt/claret-bin -c "/tapir/src/dsstore/server -m $mode -c /config/shard$s.config -i $r"
+    docker run -d -p=$port:$port --name $name --volumes-from $vconfig bholt/claret-bin -c "/tapir/src/dsstore/server -m $mode -c /config/shard$s.config -i $r"
   done
 done
 
 # Launch client(s)
 name="tapirDSBench"
-docker run -d -P --name $name --volumes-from $config bholt/claret-bin -c "/tapir/src/bench/dsbench -m $mode -c /config/shard -i $r"
+echo "## $name"
+docker run -d -P --name $name --volumes-from $vconfig bholt/claret-bin -c "/tapir/src/bench/dsbench -m $mode -c /config/shard -i $r"
 

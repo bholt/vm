@@ -12,7 +12,9 @@ RUN apt-get install -y \
   tcl
 
 ADD tapir /tapir
-RUN cd /tapir/src && make clean && make
+RUN cd /tapir/src && make clean && make -j4
 
-ENTRYPOINT ["/bin/bash"]
-CMD ["--login"]
+RUN echo "echo \">>> $@\"; exec $@" > /tapir/run
+
+ENTRYPOINT ["/bin/bash", "/tapir/run"]
+CMD []
