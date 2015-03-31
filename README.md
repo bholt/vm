@@ -1,4 +1,4 @@
 vm
 ==
 
-Files for recreating my development environment (Dockerfiles/Vagrantfiles)
+Files for recreating my development environment (Dockerfiles)
