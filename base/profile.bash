@@ -1,6 +1,7 @@
+echo "@> sourcing .bashrc"
 
 # set prompt because I'm vain that way
-export PS1='\[\e[0;34m\]docker \[\e[m\]\[\e[0;32m\]\w\[\e[m\] \[\e[0;33m\]> \[\e[m\]'
+# export PS1='\[\e[0;34m\]docker \[\e[m\]\[\e[0;32m\]\w\[\e[m\] \[\e[0;33m\]> \[\e[m\]'
 
 # common aliases
 alias ls='ls --color=auto'

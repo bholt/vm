@@ -4,28 +4,51 @@
 FROM ubuntu:14.10
 MAINTAINER Brandon Holt <holt.bg@gmail.com>
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update
+RUN apt-get install -y \
   pkg-config \
   build-essential \
   libboost1.55-all-dev \
-  wget \
-  make \
-  cmake \
-  ninja-build \
+  wget curl \
+  make cmake ninja-build \
   git \
   bash-completion \
   man \
   openssl \
-  vim
+  vim \
+  ruby-dev python-dev python-pip \
+  zsh
+
+RUN apt-get install -y mysql-client libmysqlclient-dev
+
+RUN pip install ipython
+RUN gem install rmate pry mysql2 sequel open4 rugged awesome_print
+
+RUN chsh -s /usr/bin/zsh root
+
+RUN curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | zsh
+
+# Set the locale
+RUN locale-gen en_US.UTF-8  
+ENV LANG en_US.UTF-8  
+ENV LANGUAGE en_US:en  
+ENV LC_ALL en_US.UTF-8
 
 RUN mkdir /setup
 ADD . /setup
-RUN cat /setup/profile.bash >> /root/.bashrc
+RUN cat /setup/profile.bash >> /root/.bashrc; \
+    cat /setup/profile.zsh >> /root/.zshrc; \
+    rm -r /root/.oh-my-zsh/custom; \
+    cp -r /setup/oh-my-zsh-custom /root/.oh-my-zsh/custom; \
+    cp /setup/dircolorsrc /root/.dircolorsrc; \
+    echo '🐳' > /root/.box-name
+
+ENV SHELL /usr/bin/zsh
 
 ENV LD_LIBRARY_PATH  $LD_LIBRARY_PATH:/usr/local/lib
 ENV CC               gcc
 ENV CXX              g++
 ENV LD               g++
 
-ENTRYPOINT ["/bin/bash"]
-CMD ["--login"]
+ENTRYPOINT ["/usr/bin/zsh"]
+# CMD [""]
