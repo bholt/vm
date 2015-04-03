@@ -17,16 +17,14 @@ RUN apt-get install -y \
   openssl \
   vim \
   ruby-dev python-dev python-pip \
-  zsh
+  zsh \
+  mysql-client libmysqlclient-dev
 
-RUN apt-get install -y mysql-client libmysqlclient-dev
+RUN pip install ipython &&\
+    gem install rmate pry mysql2 sequel open4 rugged awesome_print
 
-RUN pip install ipython
-RUN gem install rmate pry mysql2 sequel open4 rugged awesome_print
-
-RUN chsh -s /usr/bin/zsh root
-
-RUN curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | zsh
+RUN chsh -s /usr/bin/zsh root && \
+    curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | zsh
 
 # Set the locale
 RUN locale-gen en_US.UTF-8  

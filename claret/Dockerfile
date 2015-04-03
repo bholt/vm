@@ -11,5 +11,4 @@ RUN apt-get install -y \
   libssl-dev \
   tcl
 
-ENTRYPOINT ["/bin/bash"]
-CMD ["--login"]
+ENTRYPOINT ["/usr/bin/zsh"]
