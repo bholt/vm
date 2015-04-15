@@ -18,7 +18,9 @@ RUN apt-get install -y \
   vim \
   ruby-dev python-dev python-pip \
   zsh \
-  mysql-client libmysqlclient-dev
+  mysql-client libmysqlclient-dev \
+  tmux
+
 
 RUN pip install ipython &&\
     gem install rmate pry mysql2 sequel open4 rugged awesome_print

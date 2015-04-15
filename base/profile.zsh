@@ -7,6 +7,9 @@ export ZSH=/root/.oh-my-zsh
 # time that oh-my-zsh is loaded.
 ZSH_THEME="bholt"
 
+DISABLE_AUTO_UPDATE=true
+DISABLE_AUTO_TITLE=true
+
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 plugins=(git osx brew textmate zsh-history-substring-search zsh-syntax-highlighting)
 
