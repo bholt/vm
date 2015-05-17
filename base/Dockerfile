@@ -4,8 +4,7 @@
 FROM ubuntu:14.10
 MAINTAINER Brandon Holt <holt.bg@gmail.com>
 
-RUN apt-get update
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
   pkg-config \
   build-essential \
   libboost1.55-all-dev \
@@ -41,7 +40,7 @@ RUN cat /setup/profile.bash >> /root/.bashrc; \
     rm -r /root/.oh-my-zsh/custom; \
     cp -r /setup/oh-my-zsh-custom /root/.oh-my-zsh/custom; \
     cp /setup/dircolorsrc /root/.dircolorsrc; \
-    echo '🐳' > /root/.box-name
+    echo '🐳 ' > /root/.box-name
 
 ENV SHELL /usr/bin/zsh
 
