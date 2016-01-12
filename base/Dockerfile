@@ -25,7 +25,7 @@ RUN pip install ipython &&\
     gem install rmate pry mysql2 sequel open4 rugged awesome_print
 
 RUN chsh -s /usr/bin/zsh root && \
-    curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | zsh || true
+    sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" || true
 
 # Set the locale
 RUN locale-gen en_US.UTF-8  
