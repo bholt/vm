@@ -40,6 +40,7 @@ RUN mkdir /setup
 ADD . /setup
 RUN cat /setup/profile.bash >> /root/.bashrc; \
     cat /setup/profile.zsh > /root/.zshrc; \
+    cat /setup/gitconfig >> /root/.gitconfig; \
     rm -r /root/.oh-my-zsh/custom; \
     cp -r /setup/oh-my-zsh-custom /root/.oh-my-zsh/custom; \
     cp /setup/dircolorsrc /root/.dircolorsrc; \

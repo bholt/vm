@@ -1,0 +1,64 @@
+[color]
+	ui = auto
+[core]
+	editor = vim
+  excludesfile = ~/.gitignore_global
+  ignorecase = false
+	autocrlf = auto
+	pager = less -+$LESS -FRX
+[alias]
+  # does add/remove for files already in git
+  u = add --update
+  
+  # cuz who has the time to type all that?
+  co = checkout
+  
+  # better diff
+  d = diff --color-words='[A-z0-9_]+|[^[:space:]]' --unified=1 --ignore-all-space
+  
+  # show cached changes (word diff)
+  dc = !git d --cached
+  
+  # log: show patch for each commit (word diff)
+  lp = log --graph --color-words='[A-z0-9_]+|[^[:space:]]+' --unified=0 --decorate=short --patience
+  
+  # log: show changed files
+  lg = log --graph --stat --decorate=short
+  
+  # show changes in a commit (word diff)
+  sp = show --color-words='[A-z0-9_]+|[^[:space:]]+' --unified=0 --decorate=short --patience
+  
+  # view commit graph, all branches and merges, one line per commit
+  gr = log --graph --pretty=format:'%Cblue%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cN, %cr)%Creset' --abbrev-commit --date=relative --branches=* --remotes=*
+  
+  # Show short status with current branch name
+  s="!f() { br=$(git rev-parse --abbrev-ref HEAD) && echo \"(${br})\" && git status -s; }; f"
+  
+	sb = show-branch
+  st = status
+  com = commit
+  c = com
+  pushme = push origin HEAD
+  sm = !git submodule init && git submodule update
+  recentbranches = for-each-ref --count=15 --sort=-committerdate refs/heads/ --format='%(refname:short)'
+  br = branch
+  ic = icommit
+  icom = icommit
+  pick = cherry-pick
+  sub-add = "!f(){ git remote add $1 $2; git subtree add --prefix=$3 $2 master; }; f"
+  sub-push = "!f(){ git subtree push --prefix=$1 $1 master; }; f"
+  sub-pull = "!f(){ git subtree pull --prefix=$1 $1 master; }; f"
+  
+  outgoing = !(git fetch --quiet && git log --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %ar%Creset' $(git rev-parse --abbrev-ref --symbolic-full-name @{u})..)
+  
+  incoming = !(git fetch --quiet && git log --pretty=format:'%C(yellow)%h %C(green)%an %C(cyan)%d%Creset %s %C(white)- %ar%Creset' ..$(git rev-parse --abbrev-ref --symbolic-full-name @{u}))
+  
+  brr = "for-each-ref --sort=-committerdate refs/heads/  --format='%(refname:short) -- %(color:white)%(authordate:relative)%(color:reset)' --count=35"
+  
+[push]
+	default = current
+[rebase]
+	autosquash = true
+	autostash = true
+[branch "master"]
+	remote = origin
