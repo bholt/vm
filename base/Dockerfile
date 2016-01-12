@@ -24,8 +24,11 @@ RUN apt-get update && apt-get install -y \
 RUN pip install ipython &&\
     gem install rmate pry mysql2 sequel open4 rugged awesome_print
 
-RUN chsh -s /usr/bin/zsh root && \
-    sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" || true
+# setup `zsh` as shell & install `oh-my-zsh`
+# (from https://github.com/robbyrussell/oh-my-zsh/blob/master/tools/install.sh)
+RUN chsh -s /usr/bin/zsh root
+ADD oh-my-zsh-install.sh /oh-my-zsh-install.sh
+RUN sh /oh-my-zsh-install.sh || true && rm /oh-my-zsh-install.sh
 
 # Set the locale
 RUN locale-gen en_US.UTF-8  
