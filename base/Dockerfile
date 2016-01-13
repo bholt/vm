@@ -53,5 +53,4 @@ ENV CC               gcc
 ENV CXX              g++
 ENV LD               g++
 
-ENTRYPOINT ["/usr/bin/zsh"]
-# CMD [""]
+CMD ["/usr/bin/zsh"]
