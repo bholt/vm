@@ -1,13 +1,13 @@
 #######################################################
 # Base image with my common software and configuration
 #######################################################
-FROM ubuntu:14.10
+FROM ubuntu:15.10
 MAINTAINER Brandon Holt <holt.bg@gmail.com>
 
 RUN apt-get update && apt-get install -y \
   pkg-config \
   build-essential \
-  libboost1.55-all-dev \
+  libboost-dev \
   wget curl \
   make cmake ninja-build \
   git \
@@ -19,7 +19,6 @@ RUN apt-get update && apt-get install -y \
   zsh \
   mysql-client libmysqlclient-dev \
   tmux
-
 
 RUN pip install ipython &&\
     gem install rmate pry mysql2 sequel open4 rugged awesome_print
