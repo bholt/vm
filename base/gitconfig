@@ -4,7 +4,6 @@
 	editor = vim
   excludesfile = ~/.gitignore_global
   ignorecase = false
-	autocrlf = auto
 	pager = less -+$LESS -FRX
 [alias]
   # does add/remove for files already in git
