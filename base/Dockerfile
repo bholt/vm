@@ -15,13 +15,13 @@ RUN apt-get update && apt-get install -y \
   man \
   openssl \
   vim \
-  ruby-dev python-dev python-pip \
+  ruby-full python-dev python-pip \
   zsh \
   mysql-client libmysqlclient-dev \
   tmux
 
 RUN pip install ipython &&\
-    gem install rmate pry mysql2 sequel open4 rugged awesome_print
+    gem install bundler rmate pry mysql2 sequel open4 rugged awesome_print
 
 # setup `zsh` as shell & install `oh-my-zsh`
 # (from https://github.com/robbyrussell/oh-my-zsh/blob/master/tools/install.sh)
