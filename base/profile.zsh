@@ -1,3 +1,12 @@
+
+function regex1 { gawk 'match($0,/'$1'/, ary) {print ary['${2:-'1'}']}'; }
+
+if [ ! -f $HOME/.container-name ]; then
+  name=$(ip addr | grep 'inet.*eth0' | regex1 'inet (.*)\/24' | xargs host | regex1 'pointer (\w+)')
+  echo $name > $HOME/.container-name
+  echo -n "🐳<$name>" > $HOME/.box-name
+fi
+
 # Path to your oh-my-zsh installation.
 export ZSH=/root/.oh-my-zsh
 
