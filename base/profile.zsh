@@ -1,5 +1,5 @@
 
-function regex1 { gawk 'match($0,/'$1'/, ary) {print ary['${2:-'1'}']}'; }
+function regex1 { awk 'match($0,/'$1'/, ary) {print ary['${2:-'1'}']}'; }
 
 if [ ! -f $HOME/.container-name ]; then
   name=$(ip addr | grep 'inet.*eth0' | regex1 'inet (.*)\/24' | xargs host | regex1 'pointer (\w+)')
