@@ -31,9 +31,9 @@ ADD oh-my-zsh-install.sh /oh-my-zsh-install.sh
 RUN sh /oh-my-zsh-install.sh || true && rm /oh-my-zsh-install.sh
 
 # Set the locale
-RUN locale-gen en_US.UTF-8  
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US:en  
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 RUN mkdir /setup
@@ -45,6 +45,8 @@ RUN cat /setup/profile.bash >> /root/.bashrc; \
     cp -r /setup/oh-my-zsh-custom /root/.oh-my-zsh/custom; \
     cp /setup/dircolorsrc /root/.dircolorsrc; \
     echo '🐳 ' > /root/.box-name
+
+RUN apt-get install -y gawk
 
 ENV SHELL /usr/bin/zsh
 
