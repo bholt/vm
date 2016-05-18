@@ -19,7 +19,8 @@ RUN apt-get update && apt-get install -y \
   zsh \
   mysql-client libmysqlclient-dev \
   tmux \
-  inetutils-ping
+  inetutils-ping \
+  gawk
 
 RUN pip install ipython &&\
     gem install bundler rmate pry mysql2 sequel open4 rugged awesome_print
@@ -45,8 +46,6 @@ RUN cat /setup/profile.bash >> /root/.bashrc; \
     cp -r /setup/oh-my-zsh-custom /root/.oh-my-zsh/custom; \
     cp /setup/dircolorsrc /root/.dircolorsrc; \
     echo '🐳 ' > /root/.box-name
-
-RUN apt-get install -y gawk
 
 ENV SHELL /usr/bin/zsh
 
