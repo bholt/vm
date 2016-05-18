@@ -20,7 +20,8 @@ RUN apt-get update && apt-get install -y \
   mysql-client libmysqlclient-dev \
   tmux \
   inetutils-ping \
-  gawk
+  gawk \
+  dnsutils
 
 RUN pip install ipython &&\
     gem install bundler rmate pry mysql2 sequel open4 rugged awesome_print
